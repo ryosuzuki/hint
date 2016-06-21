@@ -4,26 +4,6 @@ import { createStore } from 'redux'
 import _ from 'lodash'
 import { PrismCode } from 'react-prism'
 
-const codeStore = (state, action) => {
-  switch (action.typ) {
-  case 'ADD':
-    return {
-      content: action.content
-    }
-  default:
-    return state
-  }
-}
-
-let store = createStore(codeStore)
-
-const addCode = (content) => {
-  return {
-    type: 'ADD',
-    content: content
-  }
-}
-
 class App extends React.Component {
   constructor (props) {
     super(props)
@@ -33,8 +13,10 @@ class App extends React.Component {
       data_b: '',
       step_a: '',
       step_b: '',
+      line: '',
       step: 0,
-      max: 0
+      max: 0,
+      height: 15
     }
     this.next = this.next.bind(this);
     this.prev = this.prev.bind(this);
@@ -43,13 +25,15 @@ class App extends React.Component {
     this.init()
   }
 
-  init () {
-    $.get('sample/data-1.py', function (res) {
+  init (id=1) {
+    $.get(`sample/data-${id}.py`, function (res) {
       this.setState({
         code: res,
       })
     }.bind(this))
-    $.get('sample/data-1.json', function (res) {
+    $.get(`sample/data-${id}.json`, function (res) {
+      this.state.step = 0
+      this.state.line = res.line
       this.state.data_a = res.attempt
       this.state.data_b = res.fixed
       this.state.max = _.max([res.attempt.length, res.fixed.length])
@@ -58,6 +42,7 @@ class App extends React.Component {
   }
 
   update () {
+    this.state.height = 15 + 21 * (this.state.line[this.state.step-1] - 1)
     this.state.step_a = _.slice(this.state.data_a, 0, this.state.step).join('\n')
     this.state.step_b = _.slice(this.state.data_b, 0, this.state.step).join('\n')
     this.setState(this.state)
@@ -77,9 +62,12 @@ class App extends React.Component {
 
   render () {
     return <div className="ui grid">
-      <div className="six wide column">
+      <div id="main" className="six wide column">
         <h1>Attempt</h1>
-        <pre><PrismCode className="language-python">{this.state.code}</PrismCode></pre>
+        <pre id="code">
+          <i id="tick" className="fa fa-arrow-right" style={{top: this.state.height}}></i>
+          <PrismCode className="language-python" data-line="1">{this.state.code}</PrismCode>
+        </pre>
         <div className="ui buttons">
          <button className="ui button" onClick={this.prev}>Back</button>
          <div className="or"></div>
@@ -104,4 +92,24 @@ render(<App />, document.getElementById('root'))
 
 
 
+
+const codeStore = (state, action) => {
+  switch (action.typ) {
+  case 'ADD':
+    return {
+      content: action.content
+    }
+  default:
+    return state
+  }
+}
+
+let store = createStore(codeStore)
+
+const addCode = (content) => {
+  return {
+    type: 'ADD',
+    content: content
+  }
+}
 

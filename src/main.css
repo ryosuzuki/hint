@@ -1,0 +1,16 @@
+#main {
+  margin-left: 50px;
+}
+
+#code {
+  position: relative;
+  padding-left: 40px;
+  line-height: 20px;
+}
+
+#tick {
+  position: absolute;
+  left: 20px;
+  top: 15px;
+  color: teal;
+}
