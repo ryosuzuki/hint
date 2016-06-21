@@ -2,6 +2,7 @@ import React from 'react'
 import { render } from 'react-dom'
 import { createStore } from 'redux'
 import _ from 'lodash'
+import { PrismCode } from 'react-prism'
 
 const codeStore = (state, action) => {
   switch (action.typ) {
@@ -65,7 +66,7 @@ class App extends React.Component {
   render () {
     return <div className="ui grid">
       <div className="eight wide column">
-        <pre><code prism className="language-python">{this.state.code}</code></pre>
+        <pre><PrismCode className="language-python">{this.state.code}</PrismCode></pre>
         <div className="ui buttons">
          <button className="ui button" onClick={this.prev}>Back</button>
          <div className="or"></div>
