@@ -8,6 +8,7 @@ class App extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
+      id: 1,
       code: '',
       data_a: '',
       data_b: '',
@@ -22,16 +23,18 @@ class App extends React.Component {
     this.prev = this.prev.bind(this);
     this.update = this.update.bind(this);
     this.init = this.init.bind(this);
+    this.change = this.change.bind(this);
     this.init()
   }
 
-  init (id=1) {
-    $.get(`sample/data-${id}.py`, function (res) {
+  init () {
+    $.get(`sample/data-${this.state.id}.py`, function (res) {
       this.setState({
         code: res,
       })
     }.bind(this))
-    $.get(`sample/data-${id}.json`, function (res) {
+    $.get(`sample/data-${this.state.id}.json`, function (res) {
+      console.log('res')
       this.state.step = 0
       this.state.line = res.line
       this.state.data_a = res.attempt
@@ -60,6 +63,16 @@ class App extends React.Component {
     this.update()
   }
 
+  change () {
+    if (this.state.id === 1) {
+      this.state.id = 2
+    } else {
+      this.state.id = 1
+    }
+    this.setState(this.state)
+    this.init()
+  }
+
   render () {
     return <div className="ui grid">
       <div id="main" className="six wide column">
@@ -69,11 +82,12 @@ class App extends React.Component {
           <PrismCode className="language-python" data-line="1">{this.state.code}</PrismCode>
         </pre>
         <div className="ui buttons">
-         <button className="ui button" onClick={this.prev}>Back</button>
-         <div className="or"></div>
-         <button className="ui positive button" onClick={this.next}>Next</button>
+        <button className="ui button" onClick={this.prev}>Back</button>
+        <div className="or"></div>
+        <button className="ui positive button" onClick={this.next}>Next</button>
         </div>
         <p>{this.state.step}</p>
+        <button className="ui button" onClick={this.change}>Change</button>
       </div>
       <div className="four wide column">
         <h1>Incorrect</h1>

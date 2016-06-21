@@ -1,0 +1,22 @@
+{
+  "line" : [1, 2, 3, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 7],
+  "attempt" : [
+    "f = square, n = 0",
+    "count = 1",
+    "a = square",
+    "1 != 0 (True)",
+    "  a = compose1(square, square)",
+    "  count = 2",
+    "2 != 0 (True)",
+    "  a = compose1(compose1(square, square), square)",
+    "  count = 3",
+    "3 != 0 (True)",
+    "  a = compose1(compose1(compose1(square, square), square), square)",
+    "  count = 4",
+    "..."
+  ],
+  "fixed" : [
+    "f = square, n = 0",
+    "return identity"
+  ]
+}
