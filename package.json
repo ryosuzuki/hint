@@ -18,6 +18,7 @@
   "homepage": "https://github.com/ryosuzuki/hint#readme",
   "dependencies": {
     "classnames": "^2.2.5",
+    "express": "^4.14.0",
     "lodash": "^3.10.1",
     "radium": "^0.17.1",
     "react": "^15.1.0",
