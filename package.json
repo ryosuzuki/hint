@@ -39,6 +39,7 @@
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
+    "bower-webpack-plugin": "^0.1.9",
     "css-loader": "^0.23.1",
     "file-loader": "^0.8.5",
     "static-loader": "^0.1.8",
