@@ -21,6 +21,10 @@ if (process.env.NODE_ENV !== 'production') {
   const indexPath = path.join(__dirname, '/index.html')
   const publicPath = express.static(path.join(__dirname))
   app.use(express.static('./'))
+  app.use('/dist', express.static(__dirname + '/dist'));
+  app.use('/src', express.static(__dirname + '/src'));
+  app.use('/sample', express.static(__dirname + '/sample'));
+  app.use('/bower_components', express.static(__dirname + '/bower_components'));
   app.get('/', function (_, res) {
     res.sendFile(indexPath)
   })
