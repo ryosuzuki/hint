@@ -2,8 +2,27 @@ import React from 'react'
 import { render } from 'react-dom'
 import { createStore } from 'redux'
 import _ from 'lodash'
-import { ApSlider, ApSliderStyle } from 'apeman-react-slider'
+import Slider from 'rc-slider'
 import { PrismCode } from 'react-prism'
+
+const marks = {
+  '-10': '-10°C',
+  0: <strong>0°C</strong>,
+  26: '26°C',
+  37: '37°C',
+  50: '50°C',
+  100: {
+    style: {
+      color: 'red',
+    },
+    label: <strong>100°C</strong>,
+  },
+};
+
+function log(value) {
+  console.log(value);
+}
+
 
 class App extends React.Component {
   constructor (props) {
@@ -166,16 +185,16 @@ class App extends React.Component {
             <button className="ui button" onClick={this.play}><i className="fa fa-play"></i></button>
           </div>
           <div className="twelve wide column">
-            <ApSliderStyle highlightColor="green"/>
-            <ApSlider
-              initial={50}
+            <Slider
+              dots
               min={0}
-              max={10}
+              max={this.state.max}
+              // marks={marks}
               onChange={(value, ui) => {
                 value = Math.floor(value)
                 this.update(value)
               }}
-            ></ApSlider>
+            ></Slider>
           </div>
         </div>
         {/*
