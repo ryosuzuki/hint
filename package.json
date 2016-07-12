@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/ryosuzuki/hint#readme",
   "dependencies": {
+    "apeman-react-slider": "^3.0.8",
     "classnames": "^2.2.5",
     "express": "^4.14.0",
     "lodash": "^3.10.1",
