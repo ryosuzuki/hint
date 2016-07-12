@@ -181,14 +181,12 @@ class App extends React.Component {
         </div>
 
         <div className="ui grid">
-          <div className="two wide column">
-            <button className="ui button" onClick={this.play}><i className="fa fa-play"></i></button>
-          </div>
           <div className="twelve wide column">
             <Slider
               dots
               min={0}
               max={this.state.max}
+              value={this.state.step}
               // marks={marks}
               onChange={(value, ui) => {
                 value = Math.floor(value)
@@ -197,6 +195,9 @@ class App extends React.Component {
             ></Slider>
           </div>
         </div>
+        <br/>
+        <button className="ui button" onClick={this.play}><i className="fa fa-play"></i></button>
+
         {/*
         <div className="ui buttons">
         <button className="ui button" onClick={this.prev}>Back</button>
