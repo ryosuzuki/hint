@@ -2,7 +2,7 @@
   margin-left: 50px;
 }
 
-#code {
+#container {
   position: relative;
   padding-left: 40px;
   line-height: 20px;
@@ -13,4 +13,15 @@
   left: 20px;
   top: 15px;
   color: teal;
+}
+
+code {
+  width: 60%;
+  float: left;
+}
+
+#output {
+  width: 40%;
+  float: left;
+  text-align: right;
 }

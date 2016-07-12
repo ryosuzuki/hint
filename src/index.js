@@ -76,10 +76,11 @@ class App extends React.Component {
   render () {
     return <div className="ui grid">
       <div id="main" className="six wide column">
-        <h1>Attempt</h1>
-        <pre id="code">
+        <h1>Prototype</h1>
+        <pre id="container">
           <i id="tick" className="fa fa-arrow-right" style={{top: this.state.height}}></i>
           <PrismCode className="language-python" data-line="1">{this.state.code}</PrismCode>
+          <div id="output">{this.state.step_a}</div>
         </pre>
         <div className="ui buttons">
         <button className="ui button" onClick={this.prev}>Back</button>
@@ -88,14 +89,6 @@ class App extends React.Component {
         </div>
         <p>{this.state.step}</p>
         <button className="ui button" onClick={this.change}>Change</button>
-      </div>
-      <div className="four wide column">
-        <h1>Incorrect</h1>
-        <pre><code prism className="language-python">{this.state.step_a}</code></pre>
-      </div>
-      <div className="four wide column">
-        <h1>Correct</h1>
-        <pre><code prism className="language-python">{this.state.step_b}</code></pre>
       </div>
     </div>
   }
