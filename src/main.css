@@ -38,3 +38,17 @@ code {
   float: left;
   text-align: right;
 }
+
+.output-var, .output-data {
+  padding: 3px;
+}
+
+.output-error {
+  background: #f1c0c0;
+}
+
+
+
+
+
+

@@ -68,20 +68,37 @@ class App extends React.Component {
     let line = this.state.lines[this.state.step-1]
     let height = 35 + 21 * (line - 1)
     let outputs = this.state.data_a[this.state.step-1]
+    let error = false
     let html = outputs.map( (output) => {
-      let v = output.var
-      let d = output.data
-      return `<span class='var'>${v}</span> = <span>${d}</span>`
+      if (!output.fixed) {
+        return `<span class='output-var'>${output.var}</span> = <span class='output-data'>${output.data}</span>`
+      } else {
+        error = {
+          var: output.var,
+          data: output.data,
+          fixed: output.fixed
+        }
+        return `<span class='output-var'>${output.var}</span> = <span class='output-data output-error'>${output.data}</span>`
+      }
     }).join(', ')
-    $(`#line-${line}`).html(html)
-    this.state.height = height
 
-    if (this.state.step >= 5) {
+    if (error) {
       $('#error')
-      .text(`x ${4} o 36`)
+      .text(`x ${error.data} o ${error.fixed}`)
       .css({top: height-5 })
       .show()
+    } else {
+      $('#error').hide()
     }
+
+    let len = this.state.code.split('\n').length
+    for (let i=len; i>line; i--) {
+      console.log(i)
+      $(`#line-${i}`).text(' ')
+    }
+    $(`#line-${line}`).html(html)
+
+    this.state.height = height
 
     // this.state.step_a = `<span id=${this.state.step}>${hoge}</span>` // _.slice(this.state.data_a, 0, this.state.step).join('\n')
     // this.state.step_b = _.slice(this.state.data_b, 0, this.state.step).join('\n')

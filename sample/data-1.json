@@ -8,13 +8,13 @@
     [{ "var": "product", "data": 1}],
     [{ "var": "i", "data": 2}],
     [{ "var": "2 <= 3", "data": "True"}],
-    [{ "var": "product", "data": 2}],
+    [{ "var": "product", "data": 2, "fixed": 4}],
     [{ "var": "i", "data": 3}],
     [{ "var": "3 <= 3", "data": "True"}],
-    [{ "var": "product", "data": 6}],
+    [{ "var": "product", "data": 6, "fixed": 36}],
     [{ "var": "i", "data": 4}],
     [{ "var": "4 <= 3", "data": "False"}],
-    [{ "var": "return", "data": "6"}]
+    [{ "var": "return", "data": "6", "fixed": 36}]
   ],
   "fixed" : [
     "n = 3, term = square",
