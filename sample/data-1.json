@@ -16,6 +16,34 @@
     [{ "var": "4 <= 3", "data": "False"}],
     [{ "var": "return", "data": "6", "fixed": 36}]
   ],
+  "hints" : [
+    {
+      "title": "Point Hint",
+      "message": "If n = 3, term = square, then return value is incorrect",
+      "x": 6,
+      "o": 36
+    },
+    {
+      "title": "Teaching Hint",
+      "message": "The return value should look like this",
+      "x": "1 * 2 * 3",
+      "o": "1 * 4 * 9",
+      "play": true
+    },
+    {
+      "title": "Teaching Hint",
+      "message": "The return value should look like this",
+      "x": "1 * 2 * 3",
+      "o": "square(1) * square(2) * square(3)",
+      "play": true
+    },
+    {
+      "title": "Bottom-out Hint",
+      "message": "You should fix this",
+      "x": "product *= i",
+      "o": "product *= term(i)"
+    }
+  ],
   "fixed" : [
     "n = 3, term = square",
     "i = 1",

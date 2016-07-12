@@ -38,7 +38,9 @@ class App extends React.Component {
       error: false,
       step: 0,
       max: 0,
-      height: 35
+      height: 35,
+      hints: [],
+      reveal: 0
     }
     this.next = this.next.bind(this);
     this.prev = this.prev.bind(this);
@@ -46,10 +48,14 @@ class App extends React.Component {
     this.update = this.update.bind(this);
     this.init = this.init.bind(this);
     this.change = this.change.bind(this);
+    this.nextHint = this.nextHint.bind(this);
     this.init()
   }
 
   init () {
+    let id = window.location.pathname.split('/')[1]
+    if (id) this.state.id = id
+
     $.get(`sample/data-${this.state.id}.py`, function (res) {
       this.setState({
         code: res,
@@ -67,20 +73,9 @@ class App extends React.Component {
       this.state.data_a = res.attempt
       this.state.data_b = res.fixed
       this.state.max = _.max([res.attempt.length, res.fixed.length])
+      this.state.hints = res.hints
       this.setState(this.state)
     }.bind(this))
-
-    $(function () {
-      $('#slider').range({
-        min: 0,
-        max: 10,
-        start: 0,
-        onChange: function (value) {
-          this.state.step = value
-          this.update()
-        }
-      })
-    })
 
   }
 
@@ -106,7 +101,7 @@ class App extends React.Component {
     if (error) {
       $('#error')
       .text(`x ${error.data} o ${error.fixed}`)
-      .css({top: height-5 })
+      .css({top: height-40 })
       .show()
     } else {
       $('#error').hide()
@@ -119,23 +114,29 @@ class App extends React.Component {
     $(`#line-${line}`).html(html)
     this.state.error = error
     this.state.height = height
-
-    // this.state.step_a = `<span id=${this.state.step}>${hoge}</span>` // _.slice(this.state.data_a, 0, this.state.step).join('\n')
-    // this.state.step_b = _.slice(this.state.data_b, 0, this.state.step).join('\n')
     this.setState(this.state)
   }
 
   play () {
     let timer = setInterval(() => {
-      console.log('hoge')
       if (this.state.error ||
           this.state.max <= this.state.step
       ) {
         clearInterval(timer)
+        this.state.error = false
       } else {
         this.next()
       }
     }, 100)
+  }
+
+  nextHint () {
+    this.state.reveal++
+    this.setState(this.state)
+    this.play()
+    if (this.state.reveal > this.state.hints.length) {
+      $('#show-next').hide()
+    }
   }
 
   next () {
@@ -161,54 +162,66 @@ class App extends React.Component {
   }
 
   render () {
-    return <div className="ui grid">
-      <div id="main" className="ten wide column">
-        <h1>Auto Hint</h1>
-
-        <div className="ui grid">
-          <div id="container" className="twelve wide column">
-            <pre>
-              <i id="tick" className="fa fa-arrow-right" style={{top: this.state.height}}></i>
-              <PrismCode className="language-python" data-line="1">{this.state.code}</PrismCode>
-              <div id="output">{this.state.step_a}</div>
-            </pre>
-          </div>
-          <div id="outer" className="four wide column">
-            <div id="error" className="ui left pointing red basic label">
-              That name is taken!
+    return <div>
+      <div id="main" className="ui grid">
+        <section id="container" className="nine wide column">
+          <pre>
+            <i id="tick" className="fa fa-arrow-right" style={{top: this.state.height}}></i>
+            <PrismCode className="language-python" data-line="1">{this.state.code}</PrismCode>
+            <div id="output">
+              {this.state.step_a}
             </div>
-          </div>
-        </div>
+            <div id="outer">
+              <div id="error" className="ui left pointing red basic label">
+                That name is taken!
+              </div>
+            </div>
+          </pre>
+          <br />
+          <Slider
+            dots
+            min={1}
+            max={this.state.max}
+            value={this.state.step}
+            // marks={marks}
+            onChange={(value, ui) => {
+              value = Math.floor(value)
+              this.update(value)
+            }}
+          ></Slider>
+          <br />
+          <button className="ui button" onClick={this.play}><i className="fa fa-play"></i></button>
+          <span>{this.state.step}</span>
 
-        <div className="ui grid">
-          <div className="twelve wide column">
-            <Slider
-              dots
-              min={0}
-              max={this.state.max}
-              value={this.state.step}
-              // marks={marks}
-              onChange={(value, ui) => {
-                value = Math.floor(value)
-                this.update(value)
-              }}
-            ></Slider>
-          </div>
-        </div>
-        <br/>
-        <button className="ui button" onClick={this.play}><i className="fa fa-play"></i></button>
-
-        {/*
-        <div className="ui buttons">
-        <button className="ui button" onClick={this.prev}>Back</button>
-        <div className="or"></div>
-        <button className="ui positive button" onClick={this.next}>Next</button>
-        </div>
-        */}
-        <p>{this.state.step}</p>
-
-
-        <button className="ui button" onClick={this.change}>Change</button>
+          <button className="ui button" onClick={this.change}>Change</button>
+        </section>
+        <section id="hint" className="seven wide column">
+          {this.state.hints.map( (hint, index) => {
+            if (index > this.state.reveal) return
+            return (
+              <div className="ui top attached segment">
+                <div className="ui top attached label">
+                  {hint.title}
+                </div>
+                <p>{hint.message}</p>
+                <pre className="language-answer">
+                  <code className="language-answer">
+                    <p className="x">
+                      <i className="fa fa-fw fa-times"></i>
+                      {hint.x}
+                    </p>
+                    <p className="o">
+                      <i className="fa fa-fw fa-check"></i>
+                      {hint.o}
+                    </p>
+                  </code>
+                </pre>
+              </div>
+            )
+          })}
+          <br />
+          <button id="show-next" className="ui button" onClick={this.nextHint}>Show next hint</button>
+        </section>
       </div>
     </div>
   }
