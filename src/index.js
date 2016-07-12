@@ -16,12 +16,14 @@ class App extends React.Component {
       step_a: '',
       step_b: '',
       lines: '',
+      error: false,
       step: 0,
       max: 0,
       height: 35
     }
     this.next = this.next.bind(this);
     this.prev = this.prev.bind(this);
+    this.play = this.play.bind(this);
     this.update = this.update.bind(this);
     this.init = this.init.bind(this);
     this.change = this.change.bind(this);
@@ -93,16 +95,28 @@ class App extends React.Component {
 
     let len = this.state.code.split('\n').length
     for (let i=len; i>line; i--) {
-      console.log(i)
       $(`#line-${i}`).text(' ')
     }
     $(`#line-${line}`).html(html)
-
+    this.state.error = error
     this.state.height = height
 
     // this.state.step_a = `<span id=${this.state.step}>${hoge}</span>` // _.slice(this.state.data_a, 0, this.state.step).join('\n')
     // this.state.step_b = _.slice(this.state.data_b, 0, this.state.step).join('\n')
     this.setState(this.state)
+  }
+
+  play () {
+    let timer = setInterval(() => {
+      console.log('hoge')
+      if (this.state.error ||
+          this.state.max <= this.state.step
+      ) {
+        clearInterval(timer)
+      } else {
+        this.next()
+      }
+    }, 100)
   }
 
   next () {
@@ -130,24 +144,7 @@ class App extends React.Component {
   render () {
     return <div className="ui grid">
       <div id="main" className="ten wide column">
-        <h1>Prototype</h1>
-
-        <ApSliderStyle highlightColor="green"/>
-        <ApSlider
-          initial={50}
-          min={0}
-          max={10}
-          onChange={(value, ui) => {
-            value = Math.floor(value)
-            this.update(value)
-          }}
-        ></ApSlider>
-        <div className="ui buttons">
-        <button className="ui button" onClick={this.prev}>Back</button>
-        <div className="or"></div>
-        <button className="ui positive button" onClick={this.next}>Next</button>
-        </div>
-        <p>{this.state.step}</p>
+        <h1>Auto Hint</h1>
 
         <div className="ui grid">
           <div id="container" className="twelve wide column">
@@ -163,6 +160,34 @@ class App extends React.Component {
             </div>
           </div>
         </div>
+
+        <div className="ui grid">
+          <div className="two wide column">
+            <button className="ui button" onClick={this.play}><i className="fa fa-play"></i></button>
+          </div>
+          <div className="twelve wide column">
+            <ApSliderStyle highlightColor="green"/>
+            <ApSlider
+              initial={50}
+              min={0}
+              max={10}
+              onChange={(value, ui) => {
+                value = Math.floor(value)
+                this.update(value)
+              }}
+            ></ApSlider>
+          </div>
+        </div>
+        {/*
+        <div className="ui buttons">
+        <button className="ui button" onClick={this.prev}>Back</button>
+        <div className="or"></div>
+        <button className="ui positive button" onClick={this.next}>Next</button>
+        </div>
+        */}
+        <p>{this.state.step}</p>
+
+
         <button className="ui button" onClick={this.change}>Change</button>
       </div>
     </div>
