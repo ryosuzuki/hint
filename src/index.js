@@ -4,31 +4,18 @@ import { createStore } from 'redux'
 import _ from 'lodash'
 import Slider from 'rc-slider'
 import { PrismCode } from 'react-prism'
+import brace from 'brace'
+import AceEditor from 'react-ace'
 
-const marks = {
-  '-10': '-10°C',
-  0: <strong>0°C</strong>,
-  26: '26°C',
-  37: '37°C',
-  50: '50°C',
-  100: {
-    style: {
-      color: 'red',
-    },
-    label: <strong>100°C</strong>,
-  },
-};
-
-function log(value) {
-  console.log(value);
-}
+import 'brace/mode/python'
+import 'brace/theme/github'
 
 
 class App extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      id: 1,
+      id: 2,
       code: '',
       data_a: '',
       data_b: '',
@@ -161,6 +148,16 @@ class App extends React.Component {
     this.init()
   }
 
+  render() {
+    return <div>
+      <AceEditor
+        mode="python"
+        theme="github"
+      />
+    </div>
+  }
+
+  /*
   render () {
     return <div>
       <div id="main" className="ui grid">
@@ -183,7 +180,6 @@ class App extends React.Component {
             min={1}
             max={this.state.max}
             value={this.state.step}
-            // marks={marks}
             onChange={(value, ui) => {
               value = Math.floor(value)
               this.update(value)
@@ -225,6 +221,7 @@ class App extends React.Component {
       </div>
     </div>
   }
+  */
 }
 
 render(<App />, document.getElementById('root'))

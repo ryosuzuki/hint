@@ -1,4 +1,8 @@
-def product(n, term):
-  if n==1:
-    return term(n)
-  return n*product(n-1, term)
+def repeated(f, n):
+  def h(x):
+    i, total = 1, n
+    while i <= n:
+      total = f(total)
+      i += 1
+    return total
+  return h
