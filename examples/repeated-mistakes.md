@@ -25,7 +25,7 @@ def compose1(f, g):
 
 # Inconsistent return type
 
-`repeated` function should return function, but you're returning value
+`repeated` should return function, but you're returning value
 ```diff
 def repeated(f, n):
   "*** YOUR CODE HERE ***"
@@ -37,7 +37,7 @@ def repeated(f, n):
 +   return lambda x: f(repeated(f, n - 1)(x))
 ```
 
-`repeated` function should return function, but you're returning value
+`repeated` should return function, but you're returning value
 ```diff
 def repeated(f, n):
   if n == 0:
