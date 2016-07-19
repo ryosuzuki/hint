@@ -212,7 +212,7 @@ def repeated(f, n):
 
 # Mistake in a conditon 
 
-Missing a base case 
+You're missing a base case 
 ```diff
 def repeated(f, n):
       return identity
@@ -225,6 +225,7 @@ def repeated(f, n):
   return compose1(f, f, n)
 ```
 
+You're missing a base case 
 ```diff
 def repeated(f, n):
   if n == 0:
@@ -235,21 +236,8 @@ def repeated(f, n):
     compose1(f, repeated(f,n-1))
 ```
 
-```diff
-def repeated(f, n):
-+ if n==0:
-+   return identity
-  count = 1
-  a = f
-  while count!=n:
-    a = compose1(a, f)
-    count += 1
-  return a
-```
 
-
-
-Mistakes in while or for loop 
+You made a mistake in a condition of while loop
 ```diff
 def repeated(f, n):
   if n == 0:
@@ -264,6 +252,7 @@ def repeated(f, n):
     return f
 ```
 
+`i` should start from 1 not 0
 ```diff
 def repeated(f, n):
   def helper(x):
@@ -276,6 +265,7 @@ def repeated(f, n):
   return helper
 ```
 
+`while` condition is wrong, count should be until `n`, not `n-1`
 ```diff
 def repeated(f, n):
   count = 0
@@ -287,6 +277,7 @@ def repeated(f, n):
   return g
 ```
 
+`return i` should be when `n == 0`, not `n == 1`
 ```diff
 def repeated(f, n):
   def inner_repeated(i):
@@ -302,6 +293,7 @@ def repeated(f, n):
 
 # Misunderstanding of a base case
 
+Base case condition is wrong. It should return function, not value
 ```diff
 def repeated(f, n):
   "*** YOUR CODE HERE ***"
@@ -313,6 +305,7 @@ def repeated(f, n):
   return compose1(f,repeated(f,n-1))
 ```
 
+Base case condition is wrong. It should return `identity`, not `f`
 ```diff
 def repeated(f, n):
 - if n == 0:
