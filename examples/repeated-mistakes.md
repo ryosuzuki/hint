@@ -211,7 +211,7 @@ def repeated(f, n):
 
 
 
-# Missing a base case / Mistake in a while conditon 
+# Missing a base case
 
 You're missing a base case 
 ```diff
@@ -237,6 +237,8 @@ def repeated(f, n):
     compose1(f, repeated(f,n-1))
 ```
 
+
+# Mistake in a while conditon 
 
 while condition should be `i <n`, not `i <= n`
 ```diff
