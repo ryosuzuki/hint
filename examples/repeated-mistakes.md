@@ -23,8 +23,6 @@ def compose1(f, g):
   return h
 ```
 
-# Student's code and fixed code
-
 # Inconsistent return type
 
 ```diff
