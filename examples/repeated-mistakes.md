@@ -165,6 +165,7 @@ def repeated(f, n):
   return fun
 ```
 
+not `n-1`, but `counter-1`
 ```diff
 def repeated(f, n):
   def repeated_helper(counter):
