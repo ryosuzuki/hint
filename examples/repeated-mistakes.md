@@ -25,6 +25,7 @@ def compose1(f, g):
 
 # Inconsistent return type
 
+`repeated` function should return function, but you're returning value
 ```diff
 def repeated(f, n):
   "*** YOUR CODE HERE ***"
@@ -36,6 +37,7 @@ def repeated(f, n):
 +   return lambda x: f(repeated(f, n - 1)(x))
 ```
 
+`repeated` function should return function, but you're returning value
 ```diff
 def repeated(f, n):
   if n == 0:
@@ -51,7 +53,7 @@ def repeated(f, n):
 + return original_function
 ```
 
-Arguments 
+number of arguments or type of arguments is inconsistent 
 ```diff
 def repeated(f, n):
   "*** YOUR CODE HERE ***"
@@ -62,8 +64,7 @@ def repeated(f, n):
 +   return compose1(f, repeated(f, n-1))
 ```
 
-`repeated` function is returning function, so `repeated(-, -)(x)` will be a value.
-`f` only takes a value as arguments 
+`f` only takes a value as arguments. `repeated` function returns function, so `repeated(-, -)` is function, not value. `repeated(-, -)(x)` will return value 
 ```diff
 def repeated(f, n):
   if n == 0:
@@ -79,6 +80,8 @@ def repeated(f, n):
 
 
 # Discrepancy of variables
+
+not `n`, but `z`
 ```diff
 def repeated(f, n):
   def helper(y):
@@ -91,6 +94,7 @@ def repeated(f, n):
   return helper
 ```
 
+not `total = n`, but `x`
 ```diff
 def repeated(f, n):
   def h(x):
@@ -103,6 +107,7 @@ def repeated(f, n):
   return h
 ```
 
+not return `n`, but `x`
 ```diff
 def repeated(f, n):
   def inner(x):
@@ -117,6 +122,7 @@ def repeated(f, n):
   return inner
 ```
 
+not `x`, but `i`
 ```diff
 def repeated(f, n):
   def nth(x):
@@ -129,6 +135,8 @@ def repeated(f, n):
     return x
   return nth
 ```
+
+not `repeat(m)`, but `repeat(n)`
 
 ```diff
 def repeated(f, n):
@@ -145,6 +153,7 @@ def repeated(f, n):
   return composed_function
 ```
 
+not `a`, but `n`
 ```diff
 def repeated(f, n):
   def fun(a):
