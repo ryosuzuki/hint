@@ -211,7 +211,7 @@ def repeated(f, n):
 
 
 
-# Mistake in a conditon 
+# Missing a base case / Mistake in a while conditon 
 
 You're missing a base case 
 ```diff
