@@ -238,7 +238,7 @@ def repeated(f, n):
 ```
 
 
-You made a mistake in a condition of while loop
+while condition should be `i <n`, not `i <= n`
 ```diff
 def repeated(f, n):
   if n == 0:
