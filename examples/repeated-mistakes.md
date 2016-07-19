@@ -81,6 +81,43 @@ def repeated(f, n):
 
 
 # Discrepancy of variables
+```diff
+def repeated(f, n):
+  def helper(y):
+    z = n
+-   while n > 0:
++   while z > 0:
+      y = f(y)
+      z -= 1
+    return y
+  return helper
+```
+
+```diff
+def repeated(f, n):
+  def h(x):
+-   i, total = 1, n
++   i, total = 1, x
+    while i <= n:
+      total = f(total)
+      i += 1
+    return total
+  return h
+```
+
+```diff
+def repeated(f, n):
+  def inner(x):
+    def helper(total, n):
+      if n == 0:
+-       return n
++       return x
+      if n == 1:
+        return f(total)
+      return helper(f(total),n-1)
+    return helper(x, n)
+  return inner
+```
 
 ```diff
 def repeated(f, n):
@@ -137,17 +174,7 @@ def repeated(f, n):
     return repeated_helper(n)
 ```
 
-```diff
-def repeated(f, n):
-  def helper(y):
-    z = n
--   while n > 0:
-+   while z > 0:
-      y = f(y)
-      z -= 1
-    return y
-  return helper
-```
+
 
 # Misconception of recursive function 
 
@@ -161,6 +188,17 @@ def repeated(f, n):
 -     return f(repeated(h, n-1)(x))
 +     return f(repeated(f, n-1)(x))
   return h
+```
+
+
+```diff
+def repeated(f, n):
+  "*** YOUR CODE HERE ***"
+  if n==0:
+    return identity
+  else:
+-   return compose1(identity, repeated(f, n-1))
++   return compose1(f, repeated(f, n-1))
 ```
 
 
@@ -190,6 +228,19 @@ def repeated(f, n):
     compose1(f, repeated(f,n-1))
 ```
 
+```diff
+def repeated(f, n):
++ if n==0:
++   return identity
+  count = 1
+  a = f
+  while count!=n:
+    a = compose1(a, f)
+    count += 1
+  return a
+```
+
+
 
 Mistakes in while or for loop 
 ```diff
@@ -206,9 +257,66 @@ def repeated(f, n):
     return f
 ```
 
+```diff
+def repeated(f, n):
+  def helper(x):
+-   i = 0
++   i = 1
+    while i <= n:
+      x = f(x)
+      i += 1
+    return x
+  return helper
+```
+
+```diff
+def repeated(f, n):
+  count = 0
+  g = lambda x: x
+- while count < n-1:
++ while count < n-0:
+    g = compose1(f,g)
+    count = count + 1
+  return g
+```
+
+```diff
+def repeated(f, n):
+  def inner_repeated(i):
+-   if n == 1:
+-     return i
++   if n == 0:
++     return i
+    else:
+      return f(repeated(f, n-1)(i))
+  return inner_repeated
+```
+
 
 # Misunderstanding of a base case
 
+```diff
+def repeated(f, n):
+  "*** YOUR CODE HERE ***"
+  if n == 0:
+-   return 0
++   return identity
+  elif n == 1:
+    return f
+  return compose1(f,repeated(f,n-1))
+```
+
+```diff
+def repeated(f, n):
+- if n == 0:
+-   return f
++ if n == 0:
++   return identity
+  elif n <= 2:
+    return compose1(f, f)
+  else:
+    return compose1(f, repeated(f, n-1))
+```
 
 
 # Slip 
@@ -240,72 +348,7 @@ def repeated(f, n):
 + return nested
 ```
 
-
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
-
-
-
-
-```diff
-def repeated(f, n):
-  def h(x):
--   i, total = 1, n
-+   i, total = 1, x
-    while i <= n:
-      total = f(total)
-      i += 1
-    return total
-  return h
-```
-
-```diff
-def repeated(f, n):
-  def inner(x):
-    def helper(total, n):
-      if n == 0:
--       return n
-+   return x
-      if n == 1:
-        return f(total)
-      return helper(f(total),n-1)
-    return helper(x, n)
-  return inner
-```
-
-```diff
-def repeated(f, n):
-  def helper(x):
--    i = 0
-+    i = 1
-    while i <= n:
-      x = f(x)
-      i += 1
-    return x
-  return helper
-```
-
-```diff
-def repeated(f, n):
-  "*** YOUR CODE HERE ***"
-  if n == 0:
--   return 0
-+   return identity
-  elif n == 1:
-    return f
-  return compose1(f,repeated(f,n-1))
-```
-
-```diff
-def repeated(f, n):
-  if n == 0:
-    return identity
-  else:
--   return f(repeated(f, n - 1))
-+   return compose1(repeated(f, n - 1))
-```
-
-
+misspell 
 ```diff
 def repeated(f, n):
   "*** YOUR CODE HERE ***"
@@ -317,97 +360,9 @@ def repeated(f, n):
 ```
 
 
-```diff
-def repeated(f, n):
-  count = 0
-  g = lambda x: x
-- while count < n-1:
-+ while count < n-0:
-    g = compose1(f,g)
-    count = count + 1
-  return g
-```
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 
-
-```diff
-def repeated(f, n):
-  def inner_repeated(i):
--   if n == 1:
--     return i
-+   if n == 0:
-+     return i
-    else:
-      return f(repeated(f, n-1)(i))
-  return inner_repeated
-```
-
-```diff
-def repeated(f, n):
-  def fun_stuff(first_num):
-    def call(num, index):
--     print(num)
-+     print(identity)
-      if index == n:
-        return num
-      return call(f(num),index+1)
-
-    return call(first_num,0)
-
-  return fun_stuff
-```
-
-```diff
-def repeated(f, n):
-- if n == 0:
--   return f
-+ if n == 0:
-+   return identity
-  elif n <= 2:
-    return compose1(f, f)
-  else:
-    return compose1(f, repeated(f, n-1))
-```
-
-
-
-```diff
-def repeated(f, n):
-+ if n==0:
-+   return identity
-  count = 1
-  a = f
-  while count!=n:
-    a = compose1(a, f)
-    count += 1
-  return a
-```
-
-
-```diff
-def repeated(f, n):
-+ if n==0:
-+   return identity
-  if n<=1:
-    return f
-  else:
-    return compose1(f, repeated(f, n-1))
-```
- 
- 
- 
-
-
-
-```diff
-def repeated(f, n):
-  "*** YOUR CODE HERE ***"
-  if n==0:
-    return identity
-  else:
--   return compose1(identity, repeated(f, n-1))
-+   return compose1(f, repeated(f, n-1))
-```
 
 
 
@@ -426,3 +381,30 @@ def repeated(f, n):
 
   return helper
 ```
+
+? 
+```diff
+def repeated(f, n):
+  if n == 0:
+    return identity
+  else:
+-   return f(repeated(f, n - 1))
++   return compose1(repeated(f, n - 1))
+```
+
+?
+```diff
+def repeated(f, n):
+  def fun_stuff(first_num):
+    def call(num, index):
+-     print(num)
++     print(identity)
+      if index == n:
+        return num
+      return call(f(num),index+1)
+
+    return call(first_num,0)
+
+  return fun_stuff
+```
+  
