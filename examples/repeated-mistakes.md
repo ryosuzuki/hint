@@ -24,6 +24,77 @@ def compose1(f, g):
 ```
 
 # Student's code and fixed code
+
+# Inconsistent return type
+
+```diff
+def repeated(f, n):
+  "*** YOUR CODE HERE ***"
+  if n == 0:
+-   return x
++   return lambda x: x
+  else:
+-   return f(repeated(f, n - 1))
++   return lambda x: f(repeated(f, n - 1)(x))
+```
+
+```diff
+def repeated(f, n):
+  if n == 0:
+    def return_value(x):
+      return x
+    return return_value
+  k = 1
+  original_function = f
+  while k < n:
+    original_function = compose1(f,original_function)
+    k += 1
+- return x
++ return original_function
+```
+
+Arguments 
+```diff
+def repeated(f, n):
+  "*** YOUR CODE HERE ***"
+  if n == 0:
+    return identity
+  else:
+-   return compose1(f, repeated(n-1))
++   return compose1(f, repeated(f, n-1))
+```
+
+`repeated` function is returning function, so `repeated(-, -)(x)` will be a value.
+`f` only takes a value as arguments 
+```diff
+def repeated(f, n):
+  if n == 0:
+    return identity
+  if n == 1:
+    return f
+  else:
+    def func(x):
+-     return f(repeated(f, n-1))
++     return f(repeated(f, n-1)(x))
+    return func
+```
+
+
+# Discrepancy of variables
+
+```diff
+def repeated(f, n):
+  def nth(x):
+-   x = n
++   i = n
+    while x > 0:
+      x = f(x)
+-     x -= 1
++     i -= 1
+    return x
+  return nth
+```
+
 ```diff
 def repeated(f, n):
   def composed_function(x):
@@ -37,7 +108,6 @@ def repeated(f, n):
 -   return repeat(m)
 +   return repeat(n)
   return composed_function
-
 ```
 
 ```diff
@@ -49,32 +119,6 @@ def repeated(f, n):
         x = f(x)
     return x
   return fun
-```
-
-```diff
-def repeated(f, n):
-      return identity
-+   if n==0:
-+    return identity
-    if n==2:
-      return h
-    else:
-      return compose1(f, h, n-1)
-  return compose1(f, f, n)
-```
-
-```diff
-def repeated(f, n):
-  if n == 0:
-    return identity
-  else:
-    i = 1
-    g = f
--   while i <= n:
-+   while i < n:
-      f = compose1(f,g)
-      i = i+1
-    return f
 ```
 
 ```diff
@@ -95,15 +139,81 @@ def repeated(f, n):
 
 ```diff
 def repeated(f, n):
-  "*** YOUR CODE HERE ***"
-  if n == 0:
--   return x
-+   return lambda x: x
-  else:
--   return f(repeated(f, n - 1))
-+   return lambda x: f(repeated(f, n - 1)(x))
+  def helper(y):
+    z = n
+-   while n > 0:
++   while z > 0:
+      y = f(y)
+      z -= 1
+    return y
+  return helper
 ```
 
+# Misconception of recursive function 
+
+```diff
+def repeated(f, n):
+  "*** YOUR CODE HERE ***"
+  def h(x):
+    if n == 0:
+      return x
+    else:
+-     return f(repeated(h, n-1)(x))
++     return f(repeated(f, n-1)(x))
+  return h
+```
+
+
+
+# Mistake in a conditon 
+
+Missing a base case 
+```diff
+def repeated(f, n):
+      return identity
++   if n==0:
++    return identity
+    if n==2:
+      return h
+    else:
+      return compose1(f, h, n-1)
+  return compose1(f, f, n)
+```
+
+```diff
+def repeated(f, n):
+  if n == 0:
+    return lambda x: x
++ if n == 1:
++   return f
+  else:
+    compose1(f, repeated(f,n-1))
+```
+
+
+Mistakes in while or for loop 
+```diff
+def repeated(f, n):
+  if n == 0:
+    return identity
+  else:
+    i = 1
+    g = f
+-   while i <= n:
++   while i < n:
+      f = compose1(f,g)
+      i = i+1
+    return f
+```
+
+
+# Misunderstanding of a base case
+
+
+
+# Slip 
+
+n is already defined 
 ```diff
 def repeated(f, n):
 - def n(x):
@@ -117,81 +227,7 @@ def repeated(f, n):
 + return func
 ```
 
-```diff
-def repeated(f, n):
-  if n == 0:
-    return lambda x: x
-+ if n == 1:
-+   return f
-  else:
-    compose1(f, repeated(f,n-1))
-```
-
-```diff
-def repeated(f, n):
-  def helper(y):
-    z = n
--   while n > 0:
-+   while z > 0:
-      y = f(y)
-      z -= 1
-    return y
-  return helper
-```
-
-```diff
-def repeated(f, n):
-  def nth(x):
--   x = n
-+   i = n
-    while x > 0:
-      x = f(x)
--     x -= 1
-+     i -= 1
-    return x
-  return nth
-```
-
-```diff
-def repeated(f, n):
-  "*** YOUR CODE HERE ***"
-  def helper(x):
-    i = n
-    g = identity(x)
-    while i != 0:
--     g = compose1(f, g)
-+     g = f(g)
-      i -= 1
-    return g
-
-  return helper
-```
-
-```diff
-def repeated(f, n):
-  "*** YOUR CODE HERE ***"
-  if n == 0:
-    return identity
-  else:
--   return compose1(f, repeated(n-1))
-+   return compose1(f, repeated(f, n-1))
-```
-
-```diff
-def repeated(f, n):
-  if n == 0:
-    def return_value(x):
-      return x
-    return return_value
-  k = 1
-  original_function = f
-  while k < n:
-    original_function = compose1(f,original_function)
-    k += 1
-- return x
-+ return original_function
-```
-
+a is not defined 
 ```diff
 def repeated(f, n):
   if n == 0:
@@ -204,52 +240,12 @@ def repeated(f, n):
 + return nested
 ```
 
-```diff
-def repeated(f, n):
-  "*** YOUR CODE HERE ***"
-  if n==0:
-    return identity
-  else:
--   return compose1(identity, repeated(f, n-1))
-+   return compose1(f, repeated(f, n-1))
-```
 
-```diff
-def repeated(f, n):
-  "*** YOUR CODE HERE ***"
-  def h(x):
-    if n == 0:
-      return x
-    else:
--     return f(repeated(h, n-1)(x))
--     return f(repeated(f, n-1)(x))
-  return h
-```
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-```diff
-def repeated(f, n):
-  if n == 0:
-    return identity
-  if n == 1:
-    return f
-  else:
-    def func(x):
--     return f(repeated(f,n-1))
-+     return f(repeated(f, n-1)(x))
-    return func
-```
 
-```diff
-def repeated(f, n):
-  "*** YOUR CODE HERE ***"
-  if n == 0:
-    return identity
-  elif n == 1:
-    return f
-  else:
--   return repeated(compose1(f, f) , n - 1)
-+   return compose1(repeated(f, n-1), f)
-```
+
+
 
 ```diff
 def repeated(f, n):
@@ -396,4 +392,37 @@ def repeated(f, n):
     return f
   else:
     return compose1(f, repeated(f, n-1))
+```
+ 
+ 
+ 
+
+
+
+```diff
+def repeated(f, n):
+  "*** YOUR CODE HERE ***"
+  if n==0:
+    return identity
+  else:
+-   return compose1(identity, repeated(f, n-1))
++   return compose1(f, repeated(f, n-1))
+```
+
+
+
+
+```diff
+def repeated(f, n):
+  "*** YOUR CODE HERE ***"
+  def helper(x):
+    i = n
+    g = identity(x)
+    while i != 0:
+-     g = compose1(f, g)
++     g = f(g)
+      i -= 1
+    return g
+
+  return helper
 ```
