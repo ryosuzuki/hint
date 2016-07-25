@@ -7,15 +7,20 @@ module.exports = {
     packageMains: ['webpack', 'browser', 'web', 'browserify', ['jam', 'main'], 'main', 'index'],
     modulesDirectories: ['web_modules', 'node_modules', 'bower_components']
   },
+  devtool: 'eval',
   entry: {
-    'index': ['./src/index.js', './src/main.less'],
-    'demo': ['./src/demo-1.js', './src/main.less'],
-    'bower': ['./src/bower.js']
+    // 'webpack-dev-server/client?http://localhost:3000',
+    // 'webpack/hot/only-dev-server',
+    // './src'
+    'vendor': []
+    './': './src/index.js',
+    './1': './src/demo-1.js',
+    // './2': './src/demo-2.js'
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    publicPath: '/dist',
-    filename: '[name].js'
+    path: path.join(__dirname, 'dist'),
+    filename: '[name].bundle.js',
+    publicPath: '/dist/'
   },
   plugins: [
     new webpack.ResolverPlugin(
@@ -25,14 +30,7 @@ module.exports = {
   ],
   module: {
     loaders: [
-      {
-        test: /\.less$/,
-        loader: 'style!css!less'
-      },
-      {
-        test: /\.(png|svg)$/,
-        loader: 'url-loader?limit=8192'
-      },
+      {test: /\.(png|svg)$/, loader: 'url-loader?limit=8192'},
       {
         test: /^((?!\.module).)*\.css$/,
         loaders: [
