@@ -10,6 +10,9 @@ import AceEditor from 'react-ace'
 import 'brace/mode/python'
 import 'brace/theme/github'
 
+import Codemirror from 'react-codemirror'
+import 'codemirror/mode/python/python.js'
+import 'codemirror/addon/selection/mark-selection.js'
 
 class App extends React.Component {
   constructor (props) {
@@ -51,7 +54,7 @@ class App extends React.Component {
       for (let i=0; i<len; i++) {
         $('#output').append(`<div id="line-${i+1}"></div>`)
       }
-
+      window.editor = this.refs.editor.getCodeMirror()
     }.bind(this))
     $.get(`sample/data-${this.state.id}.json`, function (res) {
       console.log('res')
@@ -148,6 +151,7 @@ class App extends React.Component {
     this.init()
   }
 
+  /*
   render() {
     return <div>
       <AceEditor
@@ -156,24 +160,71 @@ class App extends React.Component {
       />
     </div>
   }
+  */
 
-  /*
   render () {
+    let options = {
+      // lineNumbers: true,
+      // readOnly: true,
+      mode: 'python',
+      styleSelectedText: true
+    }
+    let markText = function (cm) {
+      console.log(cm)
+    }
+
+    let interact = (cm) => {
+      console.log(cm.getValue());
+    }
+
+    let updateCode = (newCode) => {
+      console.log(newCode)
+
+      editor.markText({line: 0, ch: 0}, {line: 0, ch: 15}, {className: "styled-background"});
+
+    }
+
     return <div>
       <div id="main" className="ui grid">
         <section id="container" className="nine wide column">
-          <pre>
-            <i id="tick" className="fa fa-arrow-right" style={{top: this.state.height}}></i>
-            <PrismCode className="language-python" data-line="1">{this.state.code}</PrismCode>
-            <div id="output">
-              {this.state.step_a}
-            </div>
-            <div id="outer">
-              <div id="error" className="ui left pointing red basic label">
-                That name is taken!
-              </div>
-            </div>
-          </pre>
+          <Codemirror
+            ref="editor"
+            value={this.state.code}
+            options={options}
+            onChange={updateCode}
+            interact={interact}
+          />
+        </section>
+      </div>
+    </div>
+  }
+
+}
+
+render(<App />, document.getElementById('root'))
+
+const codeStore = (state, action) => {
+  switch (action.typ) {
+  case 'ADD':
+    return {
+      content: action.content
+    }
+  default:
+    return state
+  }
+}
+
+let store = createStore(codeStore)
+
+const addCode = (content) => {
+  return {
+    type: 'ADD',
+    content: content
+  }
+}
+
+
+/*
           <br />
           <Slider
             dots
@@ -219,30 +270,4 @@ class App extends React.Component {
           <button id="show-next" className="ui button" onClick={this.nextHint}>Show next hint</button>
         </section>
       </div>
-    </div>
-  }
-  */
-}
-
-render(<App />, document.getElementById('root'))
-
-const codeStore = (state, action) => {
-  switch (action.typ) {
-  case 'ADD':
-    return {
-      content: action.content
-    }
-  default:
-    return state
-  }
-}
-
-let store = createStore(codeStore)
-
-const addCode = (content) => {
-  return {
-    type: 'ADD',
-    content: content
-  }
-}
-
+ */
