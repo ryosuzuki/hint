@@ -17,6 +17,9 @@ module.exports = {
     publicPath: '/dist',
     filename: '[name].js'
   },
+  devServer: {
+    port: 3000
+  },
   plugins: [
     new webpack.ResolverPlugin(
       new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin('.bower.json', ['main'])
