@@ -34,12 +34,13 @@ class Code extends Component {
         <pre>
           <i id="tick" className="fa fa-arrow-right" style={{top: this.props.data.height}}></i>
           <PrismCode className="language-python" data-line="1">{this.props.data.code}</PrismCode>
-          <Output store={this.props.store} code={this.props.data.code} step={this.props.data.step} stream={this.props.data.stream.slice(0, this.props.data.step)}/>
-          <div id="outer">
-            <div id="error" className="ui left pointing red basic label">
-              Error
-            </div>
-          </div>
+          <Output
+            store={this.props.store}
+            code={this.props.data.code}
+            step={this.props.data.step}
+            stream={this.props.data.stream.slice(0, this.props.data.step)}
+            actions={this.props.actions}
+          />
         </pre>
         <br />
         <Slider
@@ -48,7 +49,7 @@ class Code extends Component {
           max={this.props.data.max}
           value={this.props.data.step}
           onChange={this.updateStep.bind(this)}
-        ></Slider>
+        />
         <br />
         <button className="ui button" onClick={this.playStep.bind(this)}><i className="fa fa-play"></i></button>
         <span>{this.props.data.step}</span>
