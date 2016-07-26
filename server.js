@@ -1,26 +1,28 @@
-const express = require('express');
-const path = require('path');
-const config = require('../webpack.config.js')
+const express = require('express')
+const path = require('path')
+const config = require('./webpack.config.js')
 const webpack = require('webpack')
 const webpackDevMiddleware = require('webpack-dev-middleware')
 const webpackHotMiddleware = require('webpack-hot-middleware')
 
-let app = express();
+const app = express()
 
-
-let compiler = webpack(config)
+const compiler = webpack(config)
 app.use(webpackDevMiddleware(compiler, {noInfo: true, publicPath: config.output.publicPath}))
 app.use(webpackHotMiddleware(compiler))
 
-app.use(express.static('./dist'));
+app.use(express.static(__dirname + '/dist'))
+app.use('/client', express.static(__dirname + '/client'))
+app.use('/sample', express.static(__dirname + '/sample'))
+app.use('/bower_components', express.static(__dirname + '/bower_components'))
 
 app.use('/', function (req, res) {
-  res.sendFile(path.resolve('client/index.html'));
-});
+  res.sendFile(path.resolve('client/index.html'))
+})
 
-let port = 3000;
+const port = 3000
 
 app.listen(port, function(error) {
-  if (error) throw error;
-  console.log('Express server listening on port', port);
-});
+  if (error) throw error
+  console.log('Express server listening on port', port)
+})

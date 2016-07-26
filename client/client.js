@@ -10,14 +10,16 @@ let initialStore = {
   max: 0,
   error: '',
   hints: [],
-  reveal: 0
+  reveal: 0,
+  lines: [],
+  height: 35,
 }
 
 let store = configureStore(initialStore)
 
 render(
   <Provider store={store}>
-    <App/>
+    <App store={store}/>
   </Provider>,
   document.getElementById('app')
 )
