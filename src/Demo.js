@@ -145,35 +145,7 @@ class Demo extends Component {
     return <div>
       <div id="main" className="ui grid">
         <section id="container" className="nine wide column">
-          <pre>
-            <i id="tick" className="fa fa-arrow-right" style={{top: this.state.height}}></i>
-            <PrismCode className="language-python" data-line="1">{this.state.code}</PrismCode>
-            <div id="output">
-              {this.state.step_a}
-            </div>
-            <div id="outer">
-              <div id="error" className="ui left pointing red basic label">
-                Error
-              </div>
-            </div>
-          </pre>
-          <br />
-          <Slider
-            dots
-            min={1}
-            max={this.state.max}
-            value={this.state.step}
-            // marks={marks}
-            onChange={(value, ui) => {
-              value = Math.floor(value)
-              this.update(value)
-            }}
-          ></Slider>
-          <br />
-          <button className="ui button" onClick={this.play}><i className="fa fa-play"></i></button>
-          <span>{this.state.step}</span>
-
-          <button className="ui button" onClick={this.change}>Change</button>
+          <Code/>
         </section>
         <section id="hint" className="seven wide column">
           {this.state.hints.map( (hint, index) => {
