@@ -11,7 +11,10 @@ let initialStore = {
   error: '',
   hints: [],
   reveal: 0,
-  lines: [],
+  stream: [{
+    line: 0,
+    output: []
+  }],
   height: 35,
 }
 

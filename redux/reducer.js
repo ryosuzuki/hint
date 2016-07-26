@@ -10,8 +10,8 @@ let reducer = function (state, action) {
       )
     case 'UPDATE_STEP':
       let step = action.step
-      if (state.lines.length <= step) return state
-      let line = state.lines[step]
+      if (state.stream.length <= step) return state
+      let line = state.stream[step].line
       let height = 35 + 21 * (line - 1)
       return Object.assign({}, state, {
         step: step,

@@ -15,6 +15,7 @@ app.use(express.static(__dirname + '/dist'))
 app.use('/client', express.static(__dirname + '/client'))
 app.use('/sample', express.static(__dirname + '/sample'))
 app.use('/bower_components', express.static(__dirname + '/bower_components'))
+app.use('/node_modules', express.static(__dirname + '/node_modules'))
 
 app.use('/', function (req, res) {
   res.sendFile(path.resolve('client/index.html'))

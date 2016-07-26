@@ -11,22 +11,13 @@ class App extends Component {
     $.get('sample/data-1.py', function (code) {
       console.log('app init code')
       this.props.store.dispatch(actions.initCode(code))
-      // actions.initCode(code)
-      // this.setState({
-      //   code: res,
-      // })
-      // let len = res.split('\n').length
-      // for (let i=0; i<len; i++) {
-      //   $('#output').append(`<div id="line-${i+1}"></div>`)
-      // }
     }.bind(this))
+
     $.get('sample/data-1.json', function (res) {
       let state = {
         step: 0,
-        lines: res.lines,
-        data_a: res.attempt,
-        data_b: res.fixed,
-        max: _.max([res.attempt.length, res.fixed.length]),
+        stream: res.stream,
+        max: res.stream.length-1,
         hints: res.hints
       }
       this.props.store.dispatch(actions.initState(state))
@@ -37,7 +28,7 @@ class App extends Component {
     return (
       <div id="main" className="ui grid">
         <section id="container" className="nine wide column">
-          <Code data={this.props} actions={this.props.actions}/>
+          <Code store={this.props.store} data={this.props} actions={this.props.actions}/>
         </section>
       </div>
     )
